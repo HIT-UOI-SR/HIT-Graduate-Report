@@ -1,0 +1,85 @@
+% !TEX encoding = UTF-8
+\documentclass{hitgsrep}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage[outputdir={out}]{minted}% 代码高亮，需要Pygments
+
+\hitgsrepset{
+    author={张三}, % 学生姓名
+    studentid={19SXXXXXX}, % 学号
+    studentcat={工学硕士}, % 学生类别
+    course={数值分析}, % 考核科目
+    faculty={仪器科学与工程学院}, % 学生所在院（系）
+    discipline={仪器科学与技术}, % 学生所在学科
+%    year={\the\year}, % 年份（不填根据当前时间自动生成）
+%    semester={秋}, % 学期（不填根据当前时间自动生成）
+}
+
+\newminted[wlcode]{wl}{linenos,autogobble,style=mathematica}% Mathemtica高亮，需要pygments-mathematica
+
+\begin{document}
+\maketitle
+
+\section{龙贝格积分法}
+
+\begin{abstract}
+    对于实际的工程积分问题，很难应用-莱布尼兹公式去求解。
+    因此应用数值方法进行求解积分问题已经有着很广泛的应用，本文基于龙贝格积分法来解决一类积分问题。
+\end{abstract}
+
+\subsection{数学原理}
+
+考虑积分$I(f)=\int_a^b f(x)\dd{x}$，欲求其近似值，通常有复化的梯形公式、辛普森公式和科特斯公式。
+但是给定一个精度，这些公式达到要求的速度很缓慢。如何提高收敛速度，自然是人们极为关心的课题。
+为此，记$T_{1,k}$为将区间$[a,b]$进行$2^k$等分的复化的梯形公式计算结果，
+相仿的，记$T_{2,k}$为将区间$[a,b]$进行$2^k$等分的复化的辛普森公式计算结果，等等。
+根据Richardson外推加速方法，可以得到收敛速度较快的龙贝格积分法。其具体的计算公式为：
+\begin{enumerate}
+    \item 准备初值，计算
+    $$
+        T_{1,1}=\frac{b-a}{2}[f(a)+f(b)]
+    $$
+    \item\label{itm:rec} 按梯形公式的递推关系，计算
+    $$
+        T_{1,k+1}=\frac{1}{2}T_{1,k}+\frac{b-a}{2^k}\sum_{i=0}^{2^{k-1}-1}f\qty(a+\frac{b-a}{2^{k-1}}(i+0.5))
+    $$
+    \item 按龙贝格积分公式计算加速值
+    $$
+        T_{m,k-m}=\frac{4^{m-1}T_{m-1,k+1-m}-T_{m-1,k-m}}{4^{m-1}-1}
+    $$
+    \item 精度控制。对给定的精度$R$，若
+    $$
+        \abs{T_{m,1}-T_{m-1,1}}<R
+    $$
+    则终止计算，并取$T_{m,1}$为最终结果；否则返回 \ref{itm:rec} 重复计算，直到满足要求的精度为止。
+\end{enumerate}
+
+\subsection{程序设计}
+
+龙贝格积分函数：
+\begin{wlcode}
+romberg[f_, {a_, b_}] := Module[
+  {k = 1,
+   h = b-a,
+   n = 1,
+   t = {((b-a)/2.)*(f[a]+f[b])}
+  },
+  While[
+    AppendTo[t,
+      t[[-1]]/2+(h/2)*Sum[f[a+h*(i+1/2)],{i,0,n-1}]
+    ];
+    Do[
+      t[[k-m+1]] = (4^m*t[[k-m+2]]-t[[k-m+1]])/(4^m-1),
+      {m, 1, k}
+    ];
+    h /= 2;
+    n *= 2;
+    ++k;
+    t[[1]] != t[[2]]
+  ];
+  t[[1]]
+]
+\end{wlcode}
+
+\end{document}
