@@ -45,7 +45,7 @@
 \DeclareStringOption[\the\year]{year}
 \DeclareStringOption[\hit@auto@semester]{semester}
 \DeclareStringOption{course}
-\DeclareStringOption{faculty}
+\DeclareStringOption{affiliation}
 \DeclareStringOption{discipline}
 \DeclareStringOption{author}
 \DeclareStringOption{studentid}
@@ -68,7 +68,7 @@
         \renewcommand{\arraystretch}{1.5}
         \noindent\begin{tabular}{@{}c@{}l}
             \hit@putinfo{考核科目}&: \hit@course\\
-            \hit@putinfo{学生所在院（系）} &: \hit@faculty\\
+            \hit@putinfo{学生所在院（系）} &: \hit@affiliation\\
             \hit@putinfo{学生所在学科}&: \hit@discipline\\
             \hit@putinfo{学生姓名}&: \hit@author\\
             \hit@putinfo{学号}&: \hit@studentid\\
