@@ -16,7 +16,9 @@
 %    semester={秋}, % 学期（不填根据当前时间自动生成）
 }
 
-\newminted[wlcode]{wl}{linenos,autogobble,style=mathematica}% Mathemtica高亮，需要pygments-mathematica
+% Mathemtica代码高亮，需要pygments-mathematica
+\newminted[wlcode]{wl}{linenos,autogobble,style=mathematica}
+\newminted[wlinput]{wl}{autogobble,style=mathematica}
 
 \begin{document}
 \maketitle
@@ -40,7 +42,7 @@
     $$
         T_{1,1}=\frac{b-a}{2}[f(a)+f(b)]
     $$
-    \item\label{itm:rec} 按梯形公式的递推关系，计算
+    \item\label{itm:cal:rec} 按梯形公式的递推关系，计算
     $$
         T_{1,k+1}=\frac{1}{2}T_{1,k}+\frac{b-a}{2^k}\sum_{i=0}^{2^{k-1}-1}f\qty(a+\frac{b-a}{2^{k-1}}(i+0.5))
     $$
@@ -52,18 +54,18 @@
     $$
         \abs{T_{m,1}-T_{m-1,1}}<R
     $$
-    则终止计算，并取$T_{m,1}$为最终结果；否则返回 \ref{itm:rec} 重复计算，直到满足要求的精度为止。
+    则终止计算，并取$T_{m,1}$为最终结果；否则返回 \ref{itm:cal:rec} 重复计算，直到满足要求的精度为止。
 \end{enumerate}
 
 \subsection{程序设计}
 
-龙贝格积分函数：
+龙贝格积分函数（Mathematica代码）：
 \begin{wlcode}
-romberg[f_, {a_, b_}] := Module[
-  {k = 1,
-   h = b-a,
-   n = 1,
-   t = {((b-a)/2.)*(f[a]+f[b])}
+romberg[f_, {a_, b_}] := Module[{
+  k = 1,
+  h = b-a,
+  n = 1,
+  t = {((b-a)/2.)*(f[a]+f[b])}
   },
   While[
     AppendTo[t,
@@ -81,5 +83,36 @@ romberg[f_, {a_, b_}] := Module[
   t[[1]]
 ]
 \end{wlcode}
+
+\subsection{结果分析与讨论}
+
+\begin{enumerate}
+    \item 求积分$I=\int_6^{100}x^3\dd{x}$，精确解$I=24999676$
+    \begin{wlinput}
+    In[ ] := romberg[#^3&,{6,100}]
+    Out[ ] = 2.4999676*10^7
+    \end{wlinput}
+    数值结果与精确解相同
+    \item\label{itm:ex:discnt} 求积分$\int_0^1\frac{\sin(x)}{x}\dd{x}$\\
+    直接按前面方法进行积分，会发现系统报错：“碰到不定表达式”。
+    出现这种情况的原因就是当$x=0$时，被积函数分子分母都出现了$0$，
+    但我们知道该点其实是一个可去间断点，通过分段函数补充这点的定义就可以避免这个问题。
+    \begin{wlinput}
+    In[ ] := romberg[If[#==0,1,Sin[#]/#]&,{6,100}]
+    Out[ ] = 0.946083070367
+    \end{wlinput}
+    \item 求积分$\int_0^1\sin(x^2)\dd{x}$
+    \begin{wlinput}
+    In[ ] := romberg[Sin[x^2]&,{6,100}]
+    Out[ ] = 0.310268301723
+    \end{wlinput}
+\end{enumerate}
+
+\subsection{结论}
+
+龙贝格积分通常要求被积函数在积分区间上没有奇点。
+如有奇点，且奇点为第一间断点，那么采用例~\ref{itm:ex:discnt} 的方法，还是能够求出来的，
+否则，可能需要采用其它的积分方法。
+当然，龙贝格积分的收敛速度还是比较快的。
 
 \end{document}
