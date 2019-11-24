@@ -55,7 +55,7 @@
 \newcommand{\hit@auto@semester}{\ifcase \month \or 秋\or 春\or 春\or 春\or 春\or 春\or 夏\or 夏\or 秋\or 秋\or 秋\or 秋\fi}
 
 % 封面
-\newcommand{\hit@putinfo}[2][4cm]{\begin{CJKfilltwosides}[b]{#1}#2\end{CJKfilltwosides}}%
+\newcommand{\hit@putinfo}[2][3.81cm]{\begin{CJKfilltwosides}[b]{#1}#2\end{CJKfilltwosides}}%
 \renewcommand{\maketitle}{%
     \begin{titlepage}
         \begin{center}
@@ -73,7 +73,7 @@
             \hit@putinfo{学生姓名}&: \hit@author\\
             \hit@putinfo{学号}&: \hit@studentid\\
             \hit@putinfo{学生类别}&: \hit@studentcat\\
-            \hit@putinfo{考核结果}& \begin{tabular}{@{}p{5cm}@{}cc@{}}
+            \hit@putinfo{考核结果}& \begin{tabular}{@{}p{5.19cm}@{}cc@{}}
                 &\hit@putinfo[2.86cm]{阅卷人}&
             \end{tabular}
         \end{tabular}
