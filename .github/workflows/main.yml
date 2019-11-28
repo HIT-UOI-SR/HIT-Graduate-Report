@@ -1,0 +1,16 @@
+name: Build Example Document
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Compile LaTeX document
+      uses: xu-cheng/latex-action@master
+      with:
+          root_file: report.tex
+          extra_system_packages: "py-pygments"
