@@ -15,9 +15,12 @@ jobs:
           root_file: report.tex
           args: -xelatex
           extra_system_packages: "py-pygments"
-    - run: mkdir report
-    - run: cp out/report.pdf report/report.pdf
-    - uses: actions/upload-artifact@v1
+    - name: Copy document
+      run: |
+        mkdir report
+        cp out/report.pdf report/report.pdf
+    - name: Upload document
+      uses: actions/upload-artifact@v1
       with: 
         name: report
         path: report
