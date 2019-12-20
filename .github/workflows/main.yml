@@ -1,6 +1,16 @@
 name: Build Example Document
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - README.md
+      - LICENSE
+  pull_request:
+    paths-ignore:
+      - README.md
+      - LICENSE
+  schedule:
+    - cron: 0 0 1 * *
 
 jobs:
   build:
