@@ -21,10 +21,10 @@
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{ctexart}}
 \ProcessKeyvalOptions*
 
-\LoadClass[zihao=-4]{ctexart}
+\LoadClass[zihao=-4, fntef]{ctexart}
 \RequirePackage[a4paper,hmargin=3.17cm,vmargin=2.54cm]{geometry}
 \RequirePackage{fancyhdr}
-\RequirePackage{CJKfntef}
+\RequirePackage{xeCJKfntef}
 \RequirePackage[defaultsups]{newtxtext}
 \RequirePackage{caption}
 \RequirePackage{amsmath}
