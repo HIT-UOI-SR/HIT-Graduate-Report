@@ -98,13 +98,13 @@ romberg[f_, {a_, b_}] := Module[{
     出现这种情况的原因就是当$x=0$时，被积函数分子分母都出现了$0$，
     但我们知道该点其实是一个可去间断点，通过分段函数补充这点的定义就可以避免这个问题。
     \begin{wlinput}
-    In[ ] := romberg[If[#==0,1,Sin[#]/#]&,{6,100}]
+    In[ ] := romberg[If[#==0,1,Sin[#]/#]&,{0,1}]
     Out[ ] = 0.946083070367
     \end{wlinput}
     \item 求积分$\int_0^1\sin(x^2)\dd{x}$
     \begin{wlinput}
-    In[ ] := romberg[Sin[x^2]&,{6,100}]
-    Out[ ] = 0.310268301723
+    In[ ] := romberg[Sin[#^2]&,{6,100}]
+    Out[ ] = -0.007041267446
     \end{wlinput}
 \end{enumerate}
 
