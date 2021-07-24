@@ -42,7 +42,7 @@
 \renewcommand{\footrulewidth}{0.5bp}
 
 % 封面选项
-\DeclareStringOption[\the\year]{year}
+\DeclareStringOption[\hit@auto@year]{year}
 \DeclareStringOption[\hit@auto@semester]{semester}
 \DeclareStringOption{course}
 \DeclareStringOption{affiliation}
@@ -53,6 +53,7 @@
 
 % 自动生成当前学期
 \newcommand{\hit@auto@semester}{\ifcase \month \or 秋\or 春\or 春\or 春\or 春\or 春\or 夏\or 夏\or 秋\or 秋\or 秋\or 秋\fi}
+\newcommand{\hit@auto@year}{\ifnum\month>1 {\the\year}\else {\the\numexpr\year-1\relax}\fi}
 
 % 封面
 \newcommand{\hit@putinfo}[2][3.81cm]{\begin{CJKfilltwosides}[b]{#1}#2\end{CJKfilltwosides}}%
